@@ -17,7 +17,7 @@ def index(request):
                 ).replace(
                     'src="/','src="https://ofi5.mef.gob.pe/'
                     ).replace(
-                        'https://ofi5.mef.gob.pe/invierte/Scripts/consultaPublica/consultaAvanzada.js?v=636772851784304016','')
+                        'https://ofi5.mef.gob.pe/invierte/Scripts/consultaPublica/consultaAvanzada.js?v=636772851784304016','https://raw.githubusercontent.com/yuselenin/invierte/master/static/js/script.js')
                 )
         response = requests.get('https://ofi5.mef.gob.pe'+request_url)
     if request.method == "POST":
