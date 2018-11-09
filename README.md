@@ -6,8 +6,7 @@ Se utilizó la librería de python Requests para simular un proxy y modificar la
 * Intercepta las peticiones para modificar el comportamiento del sitio.
 * Ejecuta otras tareas mendiante scraping antes de devolver al usuario.
 
-> Creado en https://bramp.github.io/js-sequence-diagrams/
-Código fuente:
+Diagrama creado en https://bramp.github.io/js-sequence-diagrams/
 ```sequence
 Navegador->Sitio proxy: GET
 Sitio proxy->>Sitio original: GET
