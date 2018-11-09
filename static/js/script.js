@@ -1,4 +1,3 @@
-
 function openMaximized(url) {
     var mywindow = window.open(url, 'EDICION', 'height=' + screen.height + ',width=' + screen.width + ',resizable=yes,scrollbars=yes');
     mywindow.moveTo(0, 0);
@@ -73,7 +72,9 @@ $(function () {
         buttonImage: "img/calendar.png",
         buttonImageOnly: true,
         dateFormat: 'dd/mm/yy',
-        onSelect: function (dateText, inst) { SetFin(dateText, inst); }
+        onSelect: function (dateText, inst) {
+            SetFin(dateText, inst);
+        }
     });
     $("input[name='txtFin']").datepicker({
         showOn: "button",
@@ -85,8 +86,8 @@ $(function () {
 
     $("input[name='txtIni']").inputmask("dd/mm/yyyy");
     $("input[name='txtFin']").inputmask("dd/mm/yyyy");
-    $("#txtMin").inputmask("decimal", { autoGroup: true, groupSeparator: ",", groupSize: 3 });
-    $("#txtMax").inputmask("decimal", { autoGroup: true, groupSeparator: ",", groupSize: 3 });
+    $("#txtMin").inputmask("decimal", {autoGroup: true, groupSeparator: ",", groupSize: 3});
+    $("#txtMax").inputmask("decimal", {autoGroup: true, groupSeparator: ",", groupSize: 3});
     $("#txtMin").val('');
     $("#txtMax").val('');
 
@@ -176,6 +177,7 @@ $(function () {
 });
 
 var vmConsulta = {};
+
 function changeSelCadena() {
     var tipoCad = $('input[name="rbtnCadena"]:checked').val();
 
@@ -193,8 +195,8 @@ function changeFuncion() {
     $("#cboGrupo").empty().append($("<option/>").attr("value", "0").text("Seleccione"));
 
     CallAjax({
-        url: "/invierte/ConsultaPublica/traeListaFuncion",
-        data: { tipoCad: tipoCad },
+        url: "/config/ConsultaPublica/traeListaFuncion",
+        data: {tipoCad: tipoCad},
         success: FindFuncion
     });
 };
@@ -205,8 +207,8 @@ function changeDivision() {
     $("#cboGrupo").empty().append($("<option/>").attr("value", "0").text("Seleccione"));
 
     CallAjax({
-        url: "/invierte/ConsultaPublica/traeListaDivision",
-        data: { tipoCad: tipoCad, COD_FUNCION: $("#cboFuncion").val() },
+        url: "/config/ConsultaPublica/traeListaDivision",
+        data: {tipoCad: tipoCad, COD_FUNCION: $("#cboFuncion").val()},
         success: FindDivision
     });
 };
@@ -214,8 +216,8 @@ function changeDivision() {
 function changeGrupo() {
     var tipoCad = $('input[name="rbtnCadena"]:checked').val();
     CallAjax({
-        url: "/invierte/ConsultaPublica/traeListaGrupo",
-        data: { tipoCad: tipoCad, COD_FUNCION: $("#cboFuncion").val(), COD_PROGRAMA: $("#cboDivision").val() },
+        url: "/config/ConsultaPublica/traeListaGrupo",
+        data: {tipoCad: tipoCad, COD_FUNCION: $("#cboFuncion").val(), COD_PROGRAMA: $("#cboDivision").val()},
         success: FindGrupo
     });
 };
@@ -230,6 +232,7 @@ function AsignaName() {
         $(this).attr("name", id);
     });
 }
+
 function ShowUF(val) {
 
     $('#divGN').hide();
@@ -245,11 +248,13 @@ function ShowUF(val) {
         $('#tdUf').hide();
     }
 }
+
 function ShowGL(val) {
     $('#divMUN').hide();
     $('#divMN').hide();
     if (val != '*') $('#div' + val).show();
 }
+
 function ShowFecha(val) {
 
 
@@ -271,6 +276,7 @@ function ShowFecha(val) {
     }
 
 }
+
 function ShowMonto(val) {
     if (val)
         $('td.tblMonto').show();
@@ -281,6 +287,7 @@ function ShowMonto(val) {
 function SetFin(dateText, inst) {
     $("input[name='txtFin']").datepicker("option", "minDate", dateText);
 }
+
 function SetUbigeo(ubigeo) {
     var actDpto = true,
         actPrv = ubigeo != "DEP" ? true : false,
@@ -290,6 +297,7 @@ function SetUbigeo(ubigeo) {
     $("#cboProv").attr("disabled", !actPrv);
     $("#cboDist").attr("disabled", !actDst);
 }
+
 function IsUbigeoCompleted() {
     var ubigeo = $('input[name="rbtUbigeo"]:checked').val();
     var value = "0";
@@ -303,6 +311,7 @@ function IsUbigeoCompleted() {
 
     return value != "0";
 }
+
 function GetValSector() {
     var tipoUF = $('input[name="optUf"]:checked').val();
     var data = "";
@@ -480,20 +489,48 @@ function Carga() {
             order: "sortOrder"
         },
         postData: {
-            filters: '', ip: '', cboNom: '1', txtNom: $('#txtNom').val(), cboDpto: '', cboProv: '', cboDist: '',
+            filters: '',
+            ip: '',
+            cboNom: '1',
+            txtNom: $('#txtNom').val(),
+            cboDpto: '',
+            cboProv: '',
+            cboDist: '',
             //-------------------------------------------------------------------//
-            optUf: '', cboGNSect: '', cboGNPlie: '', cboGNUF: '',
-            cboGR: '', cboGRUf: '',
-            optGL: '', cboGLDpto: '', cboGLProv: '', cboGLDist: '', cboGLUf: '',
-            cboGLManPlie: '', cboGLManUf: '',
+            optUf: '',
+            cboGNSect: '',
+            cboGNPlie: '',
+            cboGNUF: '',
+            cboGR: '',
+            cboGRUf: '',
+            optGL: '',
+            cboGLDpto: '',
+            cboGLProv: '',
+            cboGLDist: '',
+            cboGLUf: '',
+            cboGLManPlie: '',
+            cboGLManUf: '',
             //-------------------------------------------------------------------//
-            cboSitu: '', cboNivReqViab: '',
-            cboEstu: '', cboEsta: '', optFecha: '', txtIni: '', txtFin: '', chkMonto: '', txtMin: '', txtMax: '', tipo: $('#hdnFlag').val(), cboFunc: '', chkInactivo: '0',
-            cboDivision: '', cboGrupo: '', rbtnCadena: ''
+            cboSitu: '',
+            cboNivReqViab: '',
+            cboEstu: '',
+            cboEsta: '',
+            optFecha: '',
+            txtIni: '',
+            txtFin: '',
+            chkMonto: '',
+            txtMin: '',
+            txtMax: '',
+            tipo: $('#hdnFlag').val(),
+            cboFunc: '',
+            chkInactivo: '0',
+            cboDivision: '',
+            cboGrupo: '',
+            rbtnCadena: ''
         },
         datatype: function (postdata) {
             CallAjax({
-                url: "/invierte/ConsultaPublica/traeListaProyectoConsultaAvanzada",
+                url: "/config/ConsultaPublica/traeListaProyectoConsultaAvanzada",
                 data: postdata,
                 success: function (data) {
 
@@ -527,7 +564,7 @@ function Carga() {
         },
         // this is what jqGrid is looking for in json callback
         colNames: [//'#', 
-            'C. único de inversión', 
+            'C. único de inversión',
             'C. SNIP',
             'Nombre de la inversión',
             '*Docs. viabilidad',
@@ -537,12 +574,12 @@ function Carga() {
             '*N. alternativas',
             'Marco',
             'Fecha viabilidad',
-            'Niv. gobierno', 
+            'Niv. gobierno',
             'Entidad',
             'Situación',
-            'Fecha de registro', 
-            'Estado de la inversión', 
-            'Sector', 
+            'Fecha de registro',
+            'Estado de la inversión',
+            'Sector',
             'Unidad OPMI',
             'Unidad UEI',
             'Unidad UF',
@@ -551,8 +588,8 @@ function Carga() {
             'Responsable UF',
             'Función',
             'Programa',
-            'Subprograma', 
-            'Departamento', 
+            'Subprograma',
+            'Departamento',
             'Nivel de viabilidad',
             'Estado del estudio',
             'Último estudio',
@@ -593,106 +630,161 @@ function Carga() {
             'Estado del convenio'
         ],
         colModel: [
-            { name: 'CodigoUnico', index: 'CodigoUnico', width: 50, search: false, align: 'center', hidedlg: true },
-            { name: 'Codigo', index: 'Codigo', width: 50, search: false, align: 'center', hidedlg: true },
-            { name: 'Nombre', index: 'Nombre', width: 200, search: true, formatter: showLinkBP, hidedlg: true },
-            { name: 'DocumentosDeViabiliadad', index: 'DocumentosDeViabiliadad', width: 50, search: false, hidedlg: true },
+            {name: 'CodigoUnico', index: 'CodigoUnico', width: 50, search: false, align: 'center', hidedlg: true},
+            {name: 'Codigo', index: 'Codigo', width: 50, search: false, align: 'center', hidedlg: true},
+            {name: 'Nombre', index: 'Nombre', width: 200, search: true, formatter: showLinkBP, hidedlg: true},
             {
-                name: 'MontoAlternativa', index: 'MontoAlternativa', width: 90, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }
+                name: 'DocumentosDeViabiliadad',
+                index: 'DocumentosDeViabiliadad',
+                width: 50,
+                search: false,
+                hidedlg: true
             },
-            { name: 'MontoReall', index: 'MontoReall', width: 90, search: false, hidedlg: true },
-            { name: 'Indicadores', index: 'Indicadores', width: 70, search: false, hidedlg: true },
-            { name: 'Nalternativas', index: 'Nalternativas', width: 40, search: false, hidedlg: true },
-            { name: 'Marco', index: 'Marco', width: 50 },
-            { name: 'FechaViabilidad', index: 'FechaViabilidad', width: 70 },
-            { name: 'Nivel', index: 'Nivel', width: 40, search: true },
-            { name: 'Pliego', index: 'Pliego', width: 90, search: true },
-            { name: 'Situacion', index: 'Situacion', width: 70, search: true },
-            { name: 'FechaRegistro', index: 'FechaRegistro', width: 80, hidden: true },
-            { name: 'Estado', index: 'Estado', width: 125, search: true , hidden: true},
-            { name: 'Sector', index: 'Sector', width: 90, search: true, hidden: true },
-            { name: 'Opmi', index: 'Opmi', width: 100, search: true, hidden: true },
-            { name: 'Uei', index: 'Uei', width: 100, search: true, hidden: true },
-            { name: 'Uf', index: 'Uf', width: 100, search: true, hidden: true },
-            { name: 'ResponsableOpmi', index: 'ResponsableOpmi', width: 100, search: true, hidden: true },
-            { name: 'ResponsableUei', index: 'ResponsableUei', width: 100, search: true, hidden: true },
-            { name: 'ResponsableUf', index: 'ResponsableUf', width: 100, search: true, hidden: true },
-            { name: 'Funcion', index: 'Funcion', width: 100, search: true, hidden: true },
-            { name: 'Programa', index: 'Programa', width: 100, search: true, hidden:true },
-            { name: 'Subprograma', index: 'Subprograma', width: 100, search: true, hidden: true },
-            { name: 'LocalizacionDepartamento', index: 'LocalizacionDepartamento', width: 100, search: true, hidden: true },//NUEVO
-            { name: 'NivelViabilidad', index: 'NivelViabilidad', width: 50, hidden: true },
-            { name: 'EstadoEstudio', index: 'EstadoEstudio', width: 50, hidden: true },
-            { name: 'UltimoEstudio', index: 'UltimoEstudio', width: 50, hidden: true },
-            { name: 'TipoDesactivacion', index: 'TipoDesactivacion', width: 150, search: true,  hidden: true },
-            { name: 'Opi', index: 'Opi', width: 100, search: true, hidden: true },
-            { name: 'ResponsableOpi', index: 'ResponsableOpi', width: 100, search: true, hidden: true },
-            { name: 'Ejecutora', index: 'Ejecutora', width: 80, hidden: true },
-            { name: 'ResponsableViabilidad', index: 'ResponsableViabilidad', width: 90, hidden: true },
-            { name: 'FlagExpedienteTecnico', index: 'FlagExpedienteTecnico', formatter: 'checkbox', align: 'center', width: 100, hidden: true },
-            { name: 'FlagCerrado', index: 'FlagCerrado', formatter: 'checkbox', align: 'center', width: 100, hidden: true },
+            {
+                name: 'MontoAlternativa',
+                index: 'MontoAlternativa',
+                width: 90,
+                search: true,
+                align: 'right',
+                formatter: 'currency',
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}
+            },
+            {name: 'MontoReall', index: 'MontoReall', width: 90, search: false, hidedlg: true},
+            {name: 'Indicadores', index: 'Indicadores', width: 70, search: false, hidedlg: true},
+            {name: 'Nalternativas', index: 'Nalternativas', width: 40, search: false, hidedlg: true},
+            {name: 'Marco', index: 'Marco', width: 50},
+            {name: 'FechaViabilidad', index: 'FechaViabilidad', width: 70},
+            {name: 'Nivel', index: 'Nivel', width: 40, search: true},
+            {name: 'Pliego', index: 'Pliego', width: 90, search: true},
+            {name: 'Situacion', index: 'Situacion', width: 70, search: true},
+            {name: 'FechaRegistro', index: 'FechaRegistro', width: 80, hidden: true},
+            {name: 'Estado', index: 'Estado', width: 125, search: true, hidden: true},
+            {name: 'Sector', index: 'Sector', width: 90, search: true, hidden: true},
+            {name: 'Opmi', index: 'Opmi', width: 100, search: true, hidden: true},
+            {name: 'Uei', index: 'Uei', width: 100, search: true, hidden: true},
+            {name: 'Uf', index: 'Uf', width: 100, search: true, hidden: true},
+            {name: 'ResponsableOpmi', index: 'ResponsableOpmi', width: 100, search: true, hidden: true},
+            {name: 'ResponsableUei', index: 'ResponsableUei', width: 100, search: true, hidden: true},
+            {name: 'ResponsableUf', index: 'ResponsableUf', width: 100, search: true, hidden: true},
+            {name: 'Funcion', index: 'Funcion', width: 100, search: true, hidden: true},
+            {name: 'Programa', index: 'Programa', width: 100, search: true, hidden: true},
+            {name: 'Subprograma', index: 'Subprograma', width: 100, search: true, hidden: true},
+            {
+                name: 'LocalizacionDepartamento',
+                index: 'LocalizacionDepartamento',
+                width: 100,
+                search: true,
+                hidden: true
+            },//NUEVO
+            {name: 'NivelViabilidad', index: 'NivelViabilidad', width: 50, hidden: true},
+            {name: 'EstadoEstudio', index: 'EstadoEstudio', width: 50, hidden: true},
+            {name: 'UltimoEstudio', index: 'UltimoEstudio', width: 50, hidden: true},
+            {name: 'TipoDesactivacion', index: 'TipoDesactivacion', width: 150, search: true, hidden: true},
+            {name: 'Opi', index: 'Opi', width: 100, search: true, hidden: true},
+            {name: 'ResponsableOpi', index: 'ResponsableOpi', width: 100, search: true, hidden: true},
+            {name: 'Ejecutora', index: 'Ejecutora', width: 80, hidden: true},
+            {name: 'ResponsableViabilidad', index: 'ResponsableViabilidad', width: 90, hidden: true},
+            {
+                name: 'FlagExpedienteTecnico',
+                index: 'FlagExpedienteTecnico',
+                formatter: 'checkbox',
+                align: 'center',
+                width: 100,
+                hidden: true
+            },
+            {
+                name: 'FlagCerrado',
+                index: 'FlagCerrado',
+                formatter: 'checkbox',
+                align: 'center',
+                width: 100,
+                hidden: true
+            },
             {
                 name: 'MontoF15', index: 'MontoF15', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
                 name: 'MontoF16', index: 'MontoF16', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
                 name: 'MontoF17', index: 'MontoF17', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
                 name: 'Costo', index: 'Costo', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
-            { name: 'Alternativa', index: 'Alternativa', width: 150, hidden: true },
+            {name: 'Alternativa', index: 'Alternativa', width: 150, hidden: true},
             {
-                name: 'Beneficiarios', index: 'Beneficiarios', width: 80, search: true, align: 'right', formatter: 'integer',
-                formatoptions: { thousandsSeparator: ',' }, hidden: true
+                name: 'Beneficiarios',
+                index: 'Beneficiarios',
+                width: 80,
+                search: true,
+                align: 'right',
+                formatter: 'integer',
+                formatoptions: {thousandsSeparator: ','},
+                hidden: true
             },
             {
                 name: 'PiaActual', index: 'PiaActual', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
                 name: 'PimActual', index: 'PimActual', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
                 name: 'DevActual', index: 'DevActual', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','}, hidden: true
             },
             {
-                name: 'DevAcumulado', index: 'DevAcumulado', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                name: 'DevAcumulado',
+                index: 'DevAcumulado',
+                width: 100,
+                search: true,
+                align: 'right',
+                formatter: 'currency',
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','},
+                hidden: true
             },
             {
-                name: 'DevAcumuladoAnterior', index: 'DevAcumuladoAnterior', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                name: 'DevAcumuladoAnterior',
+                index: 'DevAcumuladoAnterior',
+                width: 100,
+                search: true,
+                align: 'right',
+                formatter: 'currency',
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','},
+                hidden: true
             },
             {
-                name: 'SaldoPorFinanciar', index: 'SaldoPorFinanciar', width: 100, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
+                name: 'SaldoPorFinanciar',
+                index: 'SaldoPorFinanciar',
+                width: 100,
+                search: true,
+                align: 'right',
+                formatter: 'currency',
+                formatoptions: {prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ','},
+                hidden: true
             },
-            { name: 'MesAnioPDev', index: 'MesAnioPDev', width: 90, hidden: true },
-            { name: 'MesAnioUDev', index: 'MesAnioUDev', width: 90, hidden: true },
-            { name: 'FlagCerrado', index: 'FlagCerrado', width: 80, hidden: true },
-            { name: 'TipoFormato', index: 'TipoFormato', width: 150, hidden: false },
-            { name: 'IncluidoProgramacionPmi', index: 'IncluidoProgramacionPmi', width: 90, hidden: true },
-            { name: 'IncluidoEjecucionPmi', index: 'IncluidoEjecucionPmi', width: 90, hidden: true },
-            { name: 'GanadorFoniprel', index: 'GanadorFoniprel', width: 90, hidden: true },
-            { name: 'IdConvenio', index: 'IdConvenio', width: 90, hidden: true },
-            { name: 'TipoConvenio', index: 'TipoConvenio', width: 90, hidden: true },
-            { name: 'NroConvenio', index: 'NroConvenio', width: 120, hidden: true },
-            { name: 'EncargadoConvenio', index: 'EncargadoConvenio', width: 150, hidden: true },
-            { name: 'EncarganteConvenio', index: 'EncarganteConvenio', width: 150, hidden: true },
-            { name: 'FechaInicioConvenio', index: 'FechaInicioConvenio', width: 90, hidden: true },
-            { name: 'FechaFinConvenio', index: 'FechaFinConvenio', width: 90, hidden: true },
-            { name: 'FechaRegistroConvenio', index: 'FechaRegistroConvenio', width: 90, hidden: true },
-            { name: 'EstadoConvenio', index: 'EstadoConvenio', width: 90, hidden: true },
+            {name: 'MesAnioPDev', index: 'MesAnioPDev', width: 90, hidden: true},
+            {name: 'MesAnioUDev', index: 'MesAnioUDev', width: 90, hidden: true},
+            {name: 'FlagCerrado', index: 'FlagCerrado', width: 80, hidden: true},
+            {name: 'TipoFormato', index: 'TipoFormato', width: 150, hidden: false},
+            {name: 'IncluidoProgramacionPmi', index: 'IncluidoProgramacionPmi', width: 90, hidden: true},
+            {name: 'IncluidoEjecucionPmi', index: 'IncluidoEjecucionPmi', width: 90, hidden: true},
+            {name: 'GanadorFoniprel', index: 'GanadorFoniprel', width: 90, hidden: true},
+            {name: 'IdConvenio', index: 'IdConvenio', width: 90, hidden: true},
+            {name: 'TipoConvenio', index: 'TipoConvenio', width: 90, hidden: true},
+            {name: 'NroConvenio', index: 'NroConvenio', width: 120, hidden: true},
+            {name: 'EncargadoConvenio', index: 'EncargadoConvenio', width: 150, hidden: true},
+            {name: 'EncarganteConvenio', index: 'EncarganteConvenio', width: 150, hidden: true},
+            {name: 'FechaInicioConvenio', index: 'FechaInicioConvenio', width: 90, hidden: true},
+            {name: 'FechaFinConvenio', index: 'FechaFinConvenio', width: 90, hidden: true},
+            {name: 'FechaRegistroConvenio', index: 'FechaRegistroConvenio', width: 90, hidden: true},
+            {name: 'EstadoConvenio', index: 'EstadoConvenio', width: 90, hidden: true},
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -724,7 +816,7 @@ function Carga() {
                 if (fl == "1") {
                     be = "<img src='img/iconGlobe.gif' style='cursor:pointer;' title='Ver en el mapa...' class='imgBut' onclick='javascript:CallMap(\"" + id + "\");' />";
                 }
-                $("#divGrid").jqGrid('setRowData', ids[i], { act: be });
+                $("#divGrid").jqGrid('setRowData', ids[i], {act: be});
             }
 
             $(".loading").hide();
@@ -754,7 +846,13 @@ function Carga() {
         }
     });
 
-    $("#divGrid").jqGrid('navGrid', '#divPager', { edit: false, add: false, del: false, search: false, refresh: true }, {}, {}, {}, {}, {});
+    $("#divGrid").jqGrid('navGrid', '#divPager', {
+        edit: false,
+        add: false,
+        del: false,
+        search: false,
+        refresh: true
+    }, {}, {}, {}, {}, {});
 
     $("#divGrid").jqGrid('navButtonAdd', '#divPager', {
         caption: "",
@@ -762,38 +860,43 @@ function Carga() {
         title: "Seleccionar columnas",
         onClickButton: function () {
             $(this).jqGrid('columnChooser',
-                { width: 550, msel_opts: { dividerLocation: 0.5 }, modal: true });
+                {width: 550, msel_opts: {dividerLocation: 0.5}, modal: true});
             $("#colchooser_" + $.jgrid.jqID(this.id) + ' div.available>div.actions')
                 .prepend('<label style="float:left;position:relative;margin-left:0.6em;top:0.6em">Buscar:</label>');
         }
     });
 }
-function showLinkDocumentV(cellvalue, options, rowObject){    
+
+function showLinkDocumentV(cellvalue, options, rowObject) {
     if (cellvalue) {
         return "<a target=\"_blank\" href=\"http://ofi4.mef.gob.pe/appFs/ListaPIP.aspx?pip=" + rowObject[51] + "\" >SI</a>";
     } else {
-        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/" + rowObject[51] + "\" >NO</a>";
-    };
+        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/config/formato/verProyectoCU/" + rowObject[51] + "\" >NO</a>";
+    }
+    ;
 }
-function showLinkBP(cellvalue, options, rowObject) {    
+
+function showLinkBP(cellvalue, options, rowObject) {
     if (rowObject[8] == "INVIERTE") {
-        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/" + rowObject[1] + "\" >" + cellvalue + "</a>";
+        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/config/formato/verProyectoCU/" + rowObject[1] + "\" >" + cellvalue + "</a>";
     } else {
         return "<a target=\"_blank\" href=\"http://ofi4.mef.gob.pe/bp/ConsultarPIP/frmConsultarPIP.asp?&accion=consultar&txtCodigo=" + rowObject[1] + "\" >" + cellvalue + "</a>";
-    };
+    }
+    ;
 }
+
 function CallMap(id) {
     var url = "" + id;
     var $dialog = $('<div style="padding:10px;"></div>')
-    .html('<iframe style="border: 0px; " src="http://sig.mef.gob.pe/w2/Mapas/MapaPortal.aspx?codigo_snip=' + url + '" width="600" height="500"></iframe>')
-    .dialog({
-        autoOpen: false,
-        modal: true,
-        height: 'auto',
-        width: 'auto',
-        autoResize: true,
-        title: "PIP: " + id
-    });
+        .html('<iframe style="border: 0px; " src="http://sig.mef.gob.pe/w2/Mapas/MapaPortal.aspx?codigo_snip=' + url + '" width="600" height="500"></iframe>')
+        .dialog({
+            autoOpen: false,
+            modal: true,
+            height: 'auto',
+            width: 'auto',
+            autoResize: true,
+            title: "PIP: " + id
+        });
     $dialog.dialog('open');
 }
 
@@ -801,22 +904,23 @@ function CallMap(id) {
 function LLenaCombos() {
 
     CallAjax({
-        url: "/invierte/general/traeListaDepartamento",
+        url: "/config/general/traeListaDepartamento",
         success: FindUbigeoDpto
     });
 
 
     CallAjax({
-        url: "/invierte/general/traeListaSector",
+        url: "/config/general/traeListaSector",
         success: FindGnSector
     });
 
     CallAjax({
-        url: "/invierte/ConsultaPublica/traeListaMancomunidad",
+        url: "/config/ConsultaPublica/traeListaMancomunidad",
         success: FindGlManPliego
     });
 
 }
+
 //-----UBIGEO-----//
 
 function FindUbigeoDpto(result) {
@@ -827,7 +931,9 @@ function FindUbigeoDpto(result) {
             $("#divMnsj").html("No se encontraron departamentos.");
             CallMnsj();
         } else {
-            vmConsulta.ListaDepartamentos = result.filter(function (x) { return x.ID_DEPARTAMENTO != 99; });
+            vmConsulta.ListaDepartamentos = result.filter(function (x) {
+                return x.ID_DEPARTAMENTO != 99;
+            });
             lista = vmConsulta.ListaDepartamentos;
             var cbo = document.getElementById("cboDpto");
             cbo.options.length = 0;
@@ -863,8 +969,8 @@ function FindUbigeoDpto(result) {
                     //var data = { codigo: val };
                     //CallAjax("POST", url, JSON.stringify(data), "json", FindUbigeoProv, FindRegistroErr);
                     CallAjax({
-                        url: "/invierte/general/traeListaProvincia",
-                        data: { COD_DEPARTAMENTO: val },
+                        url: "/config/general/traeListaProvincia",
+                        data: {COD_DEPARTAMENTO: val},
                         success: FindUbigeoProv
                     });
                 }
@@ -875,6 +981,7 @@ function FindUbigeoDpto(result) {
         }
     }
 }
+
 function FindUbigeoProv(result) {
     if (result) {
         var lista = eval(result);
@@ -911,13 +1018,13 @@ function FindUbigeoProv(result) {
                 } else {
                     //CallAjax("POST", url, JSON.stringify(data), "json", FindUbigeoDist, FindRegistroErr);
                     //CallAjax({
-                    //    url: "/invierte/general/traeListaDistrito",
+                    //    url: "/config/general/traeListaDistrito",
                     //    data: { COD_PROVINCIA: val, COD_DEPARTAMENTO: $("#cboDpto").val() },
                     //    success: FindUbigeoDist
                     //});
                     CallAjax({
-                        url: "/invierte/ConsultaPublica/traeListaDistrito",
-                        data: { ID_PROVINCIA: val },
+                        url: "/config/ConsultaPublica/traeListaDistrito",
+                        data: {ID_PROVINCIA: val},
                         success: FindUbigeoDist
                     });
                 }
@@ -926,6 +1033,7 @@ function FindUbigeoProv(result) {
         }
     }
 }
+
 function FindUbigeoDist(result) {
 
     if (result) {
@@ -955,7 +1063,9 @@ function FindGnSector(result) {
             CallMnsj("No se encontraron sectores.");
         } else {
 
-            var lista = result.filter(function (x) { return x.SECTOR_ODI != 96 && x.SECTOR_ODI != 97 });
+            var lista = result.filter(function (x) {
+                return x.SECTOR_ODI != 96 && x.SECTOR_ODI != 97
+            });
             var cbo = document.getElementById("cboGNSect");
             cbo.options.length = 0;
             cbo.options[0] = new Option('Seleccione un Sector');
@@ -986,7 +1096,7 @@ function FindGnSector(result) {
             //        cmb.options[0].value = "*";
 
             //        CallAjax({
-            //            url: "/invierte/general/traeListaPliego",
+            //            url: "/config/general/traeListaPliego",
             //            data: { sector: val },
             //            success: FindGnPliego
             //        });
@@ -995,6 +1105,7 @@ function FindGnSector(result) {
         }
     }
 }
+
 //-----PLIEGO-----//
 //function FindGnPliego(result) {
 //    if (result) {
@@ -1033,7 +1144,7 @@ function FindGnSector(result) {
 //                    var sec = $('#cboGNSect').val();
 
 //                    CallAjax({
-//                        url: "/invierte/ConsultaPublica/traeListaUnidadFormuladora",
+//                        url: "/config/ConsultaPublica/traeListaUnidadFormuladora",
 //                        data: { SECTOR_ODI: sec, PLIEGO_ODI: val },
 //                        success: FindGnUf
 //                    });
@@ -1096,7 +1207,7 @@ function FindGrPliego() {
             //        uf.options[0].value = "*";
 
             //        CallAjax({
-            //            url: "/invierte/ConsultaPublica/traeListaUnidadFormuladora",
+            //            url: "/config/ConsultaPublica/traeListaUnidadFormuladora",
             //            data: { ID_DPTO: val },
             //            success: FindGrUf
             //        });
@@ -1105,6 +1216,7 @@ function FindGrPliego() {
         }
     }
 }
+
 //function FindGrUf(result) {
 //    if (result) {
 
@@ -1174,8 +1286,8 @@ function FindGlDpto() {
 
 
                     CallAjax({
-                        url: "/invierte/general/traeListaProvincia",
-                        data: { COD_DEPARTAMENTO: val },
+                        url: "/config/general/traeListaProvincia",
+                        data: {COD_DEPARTAMENTO: val},
                         success: FindGlProv
                     });
                 }
@@ -1183,6 +1295,7 @@ function FindGlDpto() {
         }
     }
 }
+
 function FindGlProv(result) {
     if (result) {
 
@@ -1225,8 +1338,8 @@ function FindGlProv(result) {
                     plie.options[0].value = 0;
 
                     CallAjax({
-                        url: "/invierte/ConsultaPublica/traeListaDistrito",
-                        data: { ID_PROVINCIA: val },
+                        url: "/config/ConsultaPublica/traeListaDistrito",
+                        data: {ID_PROVINCIA: val},
                         success: FindGlPlie
                     });
 
@@ -1236,7 +1349,7 @@ function FindGlProv(result) {
                     //uf.options[0].value = 0;
 
                     //CallAjax({
-                    //    url: "/invierte/ConsultaPublica/traeListaUnidadFormuladora",
+                    //    url: "/config/ConsultaPublica/traeListaUnidadFormuladora",
                     //    data: { ID_PROV: val },
                     //    success: FindGlUf
                     //});
@@ -1245,6 +1358,7 @@ function FindGlProv(result) {
         }
     }
 }
+
 function FindGlPlie(result) {
     if (result) {
 
@@ -1280,7 +1394,7 @@ function FindGlPlie(result) {
             //        uf.options[0].value = "*";
 
             //        CallAjax({
-            //            url: "/invierte/ConsultaPublica/traeListaUnidadFormuladora",
+            //            url: "/config/ConsultaPublica/traeListaUnidadFormuladora",
             //            data: { ID_DIST: val },
             //            success: FindGlUf
             //        });
@@ -1290,6 +1404,7 @@ function FindGlPlie(result) {
         }
     }
 }
+
 //function FindGlUf(result) {
 //    if (result) {
 
@@ -1345,7 +1460,7 @@ function FindGlManPliego(result) {
             //        uf.options[0].value = "*";
 
             //        CallAjax({
-            //            url: "/invierte/ConsultaPublica/traeListaUnidadFormuladora",
+            //            url: "/config/ConsultaPublica/traeListaUnidadFormuladora",
             //            data: { IDMANCOMUNIDAD: val },
             //            success: FindGlManUf
             //        });
@@ -1354,6 +1469,7 @@ function FindGlManPliego(result) {
         }
     }
 }
+
 //function FindGlManUf(result) {
 //    if (result) {
 //        var lista = eval(result);
@@ -1387,6 +1503,7 @@ function FindFuncion(result) {
         }
     }
 }
+
 function FindDivision(result) {
     $("#cboDivision").empty().append($("<option/>").attr("value", "0").text("Seleccione"));
     if (result) {
@@ -1400,6 +1517,7 @@ function FindDivision(result) {
         }
     }
 }
+
 function FindGrupo(result) {
     $("#cboGrupo").empty().append($("<option/>").attr("value", "0").text("Seleccione"));
     if (result) {
@@ -1412,6 +1530,7 @@ function FindGrupo(result) {
         }
     }
 }
+
 /*****************************************************************************/
 function Show(id) {
     var txt = "";
@@ -1438,9 +1557,9 @@ function Show(id) {
 function CallAjax(option) {
 
     option.type = option.type == undefined ? 'POST' : option.type,
-    option.async = option.async == undefined ? true : option.async,
-    option.dataType = option.dataType == undefined ? 'json' : option.dataType,
-    option.contentType = option.contentType == undefined ? 'application/json; charset=utf-8' : option.contentType;
+        option.async = option.async == undefined ? true : option.async,
+        option.dataType = option.dataType == undefined ? 'json' : option.dataType,
+        option.contentType = option.contentType == undefined ? 'application/json; charset=utf-8' : option.contentType;
 
     $.ajax({
         type: option.type,
@@ -1470,15 +1589,18 @@ function CallAjax(option) {
         }
     });
 };
+
 function waitingDialog(waiting) { // I choose to allow my loading screen dialog to be customizable, you don't have to
     $("#divLoad").html(waiting.message && '' != waiting.message ? waiting.message : 'Espere mientras se procesa su consulta...');
     $("#divLoad").dialog('option', 'title', waiting.title && '' != waiting.title ? waiting.title : 'Procesando');
     $("#divLoad").dialog('open');
 }
+
 function closeWaitingDialog() {
     $(".loading").hide();
     $("#divLoad").dialog('close');
 }
+
 function CallMnsj(msg) {
     if (msg != "") {
         $("#divMnsj").html(msg);
@@ -1514,9 +1636,9 @@ $.fn.ParseDataToJqGrid = function (data) {
 
                 if (item[column.name] !== null) {
                     var valCell = item[column.name].toString() + '';
-                    if (valCell.indexOf("/Date") === 0) 
+                    if (valCell.indexOf("/Date") === 0)
                         cell.push(ParseJsonToString(valCell));
-                     else 
+                    else
                         cell.push(valCell);
                 } else {
                     cell.push("");
@@ -1529,11 +1651,12 @@ $.fn.ParseDataToJqGrid = function (data) {
             cell: cell
         });
     });
-    
+
     var grid = $(this)[0];
     grid.addJSONData(resultData);
 
 };
+
 function ParseJsonToString(dateJson) {
 
     if (dateJson != null && dateJson != "") {
@@ -1547,8 +1670,9 @@ function ParseJsonToString(dateJson) {
     }
 
 }
+
 function DescargarConsultaAvanzada(params) {
-    waitingDialog({ message: "Descargando archivo excel" });
+    waitingDialog({message: "Descargando archivo excel"});
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
     xhr.onreadystatechange = function () {
@@ -1604,7 +1728,7 @@ function DescargarConsultaAvanzada(params) {
 
     };
 
-    xhr.open('POST', "/invierte/ConsultaPublica/exportarProyectoConsultaAvanzada", true);
+    xhr.open('POST', "/config/ConsultaPublica/exportarProyectoConsultaAvanzada", true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     xhr.send(JSON.stringify(params));
     //******************///
