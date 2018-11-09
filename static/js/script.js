@@ -526,17 +526,23 @@ function Carga() {
             repeatitems: true
         },
         // this is what jqGrid is looking for in json callback
-        colNames: [//'#',
-            'Documentos de viabilidad',
-            'Código único de inversión', 
+        colNames: [//'#', 
+            'C. único de inversión', 
+            'C. SNIP',
             'Nombre de la inversión',
+            '*Docs. viabilidad',
+            'Monto viable',
+            '*Inversion total',
+            '*Indic. Met. eval.',
+            '*N. alternativas',
+            'Marco',
+            'Fecha viabilidad',
+            'Niv. gobierno', 
+            'Entidad',
+            'Situación',
             'Fecha de registro', 
             'Estado de la inversión', 
-            'Situación', 
-            'Fecha de viabilidad', 
-            'Nivel de gobierno', 
             'Sector', 
-            'Entidad',
             'Unidad OPMI',
             'Unidad UEI',
             'Unidad UF',
@@ -557,7 +563,6 @@ function Carga() {
             'Responsable de viabilidad',
             'Con F15',
             'Con F14',
-            'Monto viable',
             'Monto F15',
             'Monto F16',
             'Monto F17',
@@ -573,12 +578,10 @@ function Carga() {
             'Mes/año primer devengado',
             'Mes/año último devengado',
             'Cerrado',
-            'Marco',
             'Tipo de formato',
             'Incluido programación PMI',
             'Incluido ejecución PMI',
             'Ganador FONIPREL',
-            'Código SNIP',
             'Código Convenio',
             'Tipo de convenio',
             'N° de convenio',
@@ -590,40 +593,45 @@ function Carga() {
             'Estado del convenio'
         ],
         colModel: [
-            { name: 'DocumentosDeViabiliadad', index: 'DocumentosDeViabiliadad', width: 80, search: false,formatter: showLinkDocumentV, hidedlg: true },
-            { name: 'CodigoUnico', index: 'CodigoUnico', width: 80, search: false, align: 'center', hidedlg: true },
+            { name: 'CodigoUnico', index: 'CodigoUnico', width: 50, search: false, align: 'center', hidedlg: true },
+            { name: 'Codigo', index: 'Codigo', width: 50, search: false, align: 'center', hidedlg: true },
             { name: 'Nombre', index: 'Nombre', width: 200, search: true, formatter: showLinkBP, hidedlg: true },
+            { name: 'DocumentosDeViabiliadad', index: 'DocumentosDeViabiliadad', width: 50, search: false, hidedlg: true },
+            {
+                name: 'MontoAlternativa', index: 'MontoAlternativa', width: 90, search: true, align: 'right', formatter: 'currency',
+                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }
+            },
+            { name: 'MontoReall', index: 'MontoReall', width: 90, search: false, hidedlg: true },
+            { name: 'Indicadores', index: 'Indicadores', width: 70, search: false, hidedlg: true },
+            { name: 'Nalternativas', index: 'Nalternativas', width: 40, search: false, hidedlg: true },
+            { name: 'Marco', index: 'Marco', width: 50 },
+            { name: 'FechaViabilidad', index: 'FechaViabilidad', width: 70 },
+            { name: 'Nivel', index: 'Nivel', width: 40, search: true },
+            { name: 'Pliego', index: 'Pliego', width: 90, search: true },
+            { name: 'Situacion', index: 'Situacion', width: 70, search: true },
             { name: 'FechaRegistro', index: 'FechaRegistro', width: 80, hidden: true },
-            { name: 'Estado', index: 'Estado', width: 125, search: true },
-            { name: 'Situacion', index: 'Situacion', width: 80, search: true, hidden: false },
-            { name: 'FechaViabilidad', index: 'FechaViabilidad', width: 80 },
-            { name: 'Nivel', index: 'Nivel', width: 40, search: true, hidden: false },
-            { name: 'Sector', index: 'Sector', width: 90, search: true, hidden: false },
-            { name: 'Pliego', index: 'Pliego', width: 90, search: true, hidden: false },
+            { name: 'Estado', index: 'Estado', width: 125, search: true , hidden: true},
+            { name: 'Sector', index: 'Sector', width: 90, search: true, hidden: true },
             { name: 'Opmi', index: 'Opmi', width: 100, search: true, hidden: true },
             { name: 'Uei', index: 'Uei', width: 100, search: true, hidden: true },
             { name: 'Uf', index: 'Uf', width: 100, search: true, hidden: true },
             { name: 'ResponsableOpmi', index: 'ResponsableOpmi', width: 100, search: true, hidden: true },
             { name: 'ResponsableUei', index: 'ResponsableUei', width: 100, search: true, hidden: true },
             { name: 'ResponsableUf', index: 'ResponsableUf', width: 100, search: true, hidden: true },
-            { name: 'Funcion', index: 'Funcion', width: 100, search: true, hidden: false },
-            { name: 'Programa', index: 'Programa', width: 100, search: true, hidden: true },
+            { name: 'Funcion', index: 'Funcion', width: 100, search: true, hidden: true },
+            { name: 'Programa', index: 'Programa', width: 100, search: true, hidden:true },
             { name: 'Subprograma', index: 'Subprograma', width: 100, search: true, hidden: true },
             { name: 'LocalizacionDepartamento', index: 'LocalizacionDepartamento', width: 100, search: true, hidden: true },//NUEVO
             { name: 'NivelViabilidad', index: 'NivelViabilidad', width: 50, hidden: true },
             { name: 'EstadoEstudio', index: 'EstadoEstudio', width: 50, hidden: true },
             { name: 'UltimoEstudio', index: 'UltimoEstudio', width: 50, hidden: true },
-            { name: 'TipoDesactivacion', index: 'TipoDesactivacion', width: 150, search: true },
+            { name: 'TipoDesactivacion', index: 'TipoDesactivacion', width: 150, search: true,  hidden: true },
             { name: 'Opi', index: 'Opi', width: 100, search: true, hidden: true },
             { name: 'ResponsableOpi', index: 'ResponsableOpi', width: 100, search: true, hidden: true },
             { name: 'Ejecutora', index: 'Ejecutora', width: 80, hidden: true },
             { name: 'ResponsableViabilidad', index: 'ResponsableViabilidad', width: 90, hidden: true },
             { name: 'FlagExpedienteTecnico', index: 'FlagExpedienteTecnico', formatter: 'checkbox', align: 'center', width: 100, hidden: true },
             { name: 'FlagCerrado', index: 'FlagCerrado', formatter: 'checkbox', align: 'center', width: 100, hidden: true },
-            {
-                name: 'MontoAlternativa', index: 'MontoAlternativa', width: 80, search: true, align: 'right', formatter: 'currency',
-                formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }
-            },
             {
                 name: 'MontoF15', index: 'MontoF15', width: 100, search: true, align: 'right', formatter: 'currency',
                 formatoptions: { prefix: 'S/. ', decimalPlaces: 0, thousandsSeparator: ',' }, hidden: true
@@ -643,7 +651,7 @@ function Carga() {
             { name: 'Alternativa', index: 'Alternativa', width: 150, hidden: true },
             {
                 name: 'Beneficiarios', index: 'Beneficiarios', width: 80, search: true, align: 'right', formatter: 'integer',
-                formatoptions: { thousandsSeparator: ',' }, hidden: false
+                formatoptions: { thousandsSeparator: ',' }, hidden: true
             },
             {
                 name: 'PiaActual', index: 'PiaActual', width: 100, search: true, align: 'right', formatter: 'currency',
@@ -672,12 +680,10 @@ function Carga() {
             { name: 'MesAnioPDev', index: 'MesAnioPDev', width: 90, hidden: true },
             { name: 'MesAnioUDev', index: 'MesAnioUDev', width: 90, hidden: true },
             { name: 'FlagCerrado', index: 'FlagCerrado', width: 80, hidden: true },
-            { name: 'Marco', index: 'Marco', width: 100, hidden: false },
             { name: 'TipoFormato', index: 'TipoFormato', width: 150, hidden: false },
             { name: 'IncluidoProgramacionPmi', index: 'IncluidoProgramacionPmi', width: 90, hidden: true },
             { name: 'IncluidoEjecucionPmi', index: 'IncluidoEjecucionPmi', width: 90, hidden: true },
             { name: 'GanadorFoniprel', index: 'GanadorFoniprel', width: 90, hidden: true },
-            { name: 'Codigo', index: 'Codigo', width: 80, search: false, align: 'center', hidedlg: true },
             { name: 'IdConvenio', index: 'IdConvenio', width: 90, hidden: true },
             { name: 'TipoConvenio', index: 'TipoConvenio', width: 90, hidden: true },
             { name: 'NroConvenio', index: 'NroConvenio', width: 120, hidden: true },
@@ -696,7 +702,7 @@ function Carga() {
         viewrecords: true,
         caption: "Listado de Proyectos",
         shrinkToFit: false,
-        width: 1323,//1089,
+        width: 1089,
         height: "auto",
         ignoreCase: true,
         rownumbers: true,
@@ -770,10 +776,10 @@ function showLinkDocumentV(cellvalue, options, rowObject){
     };
 }
 function showLinkBP(cellvalue, options, rowObject) {    
-    if (rowObject[46] == "INVIERTE") {
-        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/" + rowObject[51] + "\" >" + cellvalue + "</a>";
+    if (rowObject[8] == "INVIERTE") {
+        return "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/" + rowObject[1] + "\" >" + cellvalue + "</a>";
     } else {
-        return "<a target=\"_blank\" href=\"http://ofi4.mef.gob.pe/bp/ConsultarPIP/frmConsultarPIP.asp?&accion=consultar&txtCodigo=" + rowObject[51] + "\" >" + cellvalue + "</a>";
+        return "<a target=\"_blank\" href=\"http://ofi4.mef.gob.pe/bp/ConsultarPIP/frmConsultarPIP.asp?&accion=consultar&txtCodigo=" + rowObject[1] + "\" >" + cellvalue + "</a>";
     };
 }
 function CallMap(id) {

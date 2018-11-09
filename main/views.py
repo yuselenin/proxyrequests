@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 def index(request):
     request_url = request.META['PATH_INFO']+ request.META['QUERY_STRING']
+    print(request_url)
     if request.method == "GET":
         if request.META['PATH_INFO'] == '/':
             request_url = '/invierte/consultaPublica/consultaAvanzada'
@@ -17,7 +18,7 @@ def index(request):
                 ).replace(
                     'src="/','src="https://ofi5.mef.gob.pe/'
                     ).replace(
-                        'https://ofi5.mef.gob.pe/invierte/Scripts/consultaPublica/consultaAvanzada.js?v=636772851784304016','https://raw.githubusercontent.com/yuselenin/invierte/master/static/js/script.js')
+                        'https://ofi5.mef.gob.pe/invierte/Scripts/consultaPublica/consultaAvanzada.js','/static/js/script.js')
                 )
         response = requests.get('https://ofi5.mef.gob.pe'+request_url)
     if request.method == "POST":
@@ -33,16 +34,24 @@ def index(request):
                 print(i['Codigo'])
                 if i['Marco'] =="SNIP": 
                     titulo_response = requests.get('http://ofi4.mef.gob.pe/bp/ConsultarPIP/titulo.asp?donde=consulta&codigo=%s&version=1&ed='%i['Codigo'])
-                    i['DocumentosDeViabiliadad'] = 'ofi4.mef.gob.pe/appFs/ListaPIP.aspx?pip=' in titulo_response.text
-                    ficha_response = requests.get('http://ofi4.mef.gob.pe/bp/ConsultarPIP/PIP.asp?codigo=%s&version=1&ed='%i['Codigo'])
-                    soup = BeautifulSoup(ficha_response.content, "html.parser")
-                    tabla_3 = soup.find_all("table", class_= "tablas")[2]
+                    check_doc = 'ofi4.mef.gob.pe/appFs/ListaPIP.aspx?pip=' in titulo_response.text
+                    i['DocumentosDeViabiliadad']= "<a target=\"_blank\" href=\"http://ofi4.mef.gob.pe/appFs/ListaPIP.aspx?pip=%s\">SI</a>" %i['Codigo'] if check_doc else "NO"
+                    print(i['DocumentosDeViabiliadad'])
+                    #ficha_response = requests.get('http://ofi4.mef.gob.pe/bp/ConsultarPIP/PIP.asp?codigo=%s&version=1&ed='%i['Codigo'])
+                    #soup = BeautifulSoup(ficha_response.content, "html.parser")
+                    #tabla_3 = soup.find_all("table", class_= "tablas")[2]
                     #tr=tabla_3.find_all('tr')[1]
-                    i['Alternativa1']=str(tr.find_all('td')[2].get_text()).strip()
-                    i['Alternativa2']=str(tr.find_all('td')[3].get_text()).strip()
-                    i['Alternativa3']=str(tr.find_all('td')[4].get_text()).strip()
+                    #i['Alternativa1']=str(tr.find_all('td')[2].get_text()).strip()
+                    #i['Alternativa2']=str(tr.find_all('td')[3].get_text()).strip()
+                    #i['Alternativa3']=str(tr.find_all('td')[4].get_text()).strip()
                     #i['TablaIndicadores']=str(tabla_3)
+                    i['MontoReall'] = "Sin i."
+                    i['Indicadores'] = "Sin i."
+                    i['Nalternativas'] = "Sin i."
                 else:
-                    pass
+                    i['DocumentosDeViabiliadad']="<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/%s\">SI</a>"%i['Codigo']
+                    i['MontoReall'] = "Sin i."
+                    i['Indicadores'] = "Sin i."
+                    i['Nalternativas'] = "Sin i."
             return HttpResponse(json.dumps(data_json))
     return HttpResponse(response.content)
