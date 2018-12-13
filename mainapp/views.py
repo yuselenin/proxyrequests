@@ -11,7 +11,7 @@ def index(request):
     # print(request_url)
     if request.method == "GET":
         if request.META['PATH_INFO'] == '/':
-            request_url = '/config/consultaPublica/consultaAvanzada'
+            request_url = '/inviertePub/ConsultaPublica/ConsultaAvanzada'
             main_get_response = requests.get('https://ofi5.mef.gob.pe' + request_url)
             return HttpResponse(
                 main_get_response.text.replace(
@@ -19,7 +19,7 @@ def index(request):
                 ).replace(
                     'src="/', 'src="https://ofi5.mef.gob.pe/'
                 ).replace(
-                    'https://ofi5.mef.gob.pe/config/Scripts/consultaPublica/consultaAvanzada.js',
+                    'https://ofi5.mef.gob.pe/inviertePub/Scripts/ConsultaPublica/consultaAvanzada.js',
                     '/static/js/script.js')
             )
         response = requests.get('https://ofi5.mef.gob.pe' + request_url)
@@ -31,7 +31,7 @@ def index(request):
         if request.is_ajax() and request.body:
             data = json.loads(request.body)
         response = requests.post('https://ofi5.mef.gob.pe' + request_url, data=data, headers=headers)
-        if request_url == '/config/ConsultaPublica/traeListaProyectoConsultaAvanzada':
+        if request_url == '/inviertePub/ConsultaPublica/traeListaProyectoConsultaAvanzada':
             data_json = response.json()
             for i in data_json['Data']:
                 # print(i['Codigo'])
@@ -51,15 +51,15 @@ def index(request):
                     # i['Alternativa2']=str(tr.find_all('td')[3].get_text()).strip()
                     # i['Alternativa3']=str(tr.find_all('td')[4].get_text()).strip()
                     # i['TablaIndicadores']=str(tabla_3)
-                    i['MontoReall'] = "Por impl."
-                    i['Indicadores'] = "Por impl."
-                    i['Nalternativas'] = "Por impl."
+                    #i['MontoReall'] = "Por impl."
+                    #i['Indicadores'] = "Por impl."
+                    #i['Nalternativas'] = "Por impl."
                 else:
                     i[
-                        'DocumentosDeViabiliadad'] = "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/config/formato/verProyectoCU/%s\">SI</a>" % \
+                        'DocumentosDeViabiliadad'] = "<a target=\"_blank\" href=\"https://ofi5.mef.gob.pe/invierte/formato/verProyectoCU/%s\">SI</a>" % \
                                                      i['Codigo']
-                    i['MontoReall'] = "Por impl."
-                    i['Indicadores'] = "Por impl."
-                    i['Nalternativas'] = "Por impl."
+                    #i['MontoReall'] = "Por impl."
+                    #i['Indicadores'] = "Por impl."
+                    #i['Nalternativas'] = "Por impl."
             return HttpResponse(json.dumps(data_json))
     return HttpResponse(response.content)
